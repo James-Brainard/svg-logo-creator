@@ -13,16 +13,11 @@
 // WHEN I open the `logo.svg` file in a browser
 // THEN I am shown a 300x200 pixel image that matches the criteria I entered
 
-
-// Tips: Object destructuring is needed at some point.
-
-// Include packages needed for application
-// const inquirer = require('inquirer') each file needs to require another in which is communicates or interacts with etc.
-
 const inquirer = require('inquirer');
 const fs = require('fs');
 const { Circle, Triangle, Square } = require('./lib/shapes');
 
+// Defined promptQuestions to use inquirer prompt to display the questions and save them.
 function promptQuestions() {
   inquirer.prompt([
     {
@@ -44,7 +39,7 @@ function promptQuestions() {
       name: 'shapeColor'
     },
   ])
-    // Need to build if statement for text prompt 3 or less characters to generate logo
+    // Checking if the text is between 1-3 char. If so, run writeFileFunc with the "filename" and the user answers.
     .then((answers) => {
       if (answers.text.length > 3 || answers.text.length < 1) {
         console.error("You must enter 1-3 characters");
@@ -56,21 +51,17 @@ function promptQuestions() {
     });
 }
 
-// build a writeToFile callback function calling fswriteFile 
-// fs.writefile(`logo.svg` aka file name, call a function with a param possibly, then an err (error) )
-// Define svg string with all Gens needed. 
-// Based on the user answers writeFileFunc will begin generating the svg string beginning with <svg> and continue to add onto it with the process below. Once we initiate the closing svg tag, fs writefile will input this into Logo.svg to generate user's logo.
+
+// writeFileFunc will take in the user answers and begin generating the code needed to create the svg logo.
 function writeFileFunc(fileName, answers) {
-  // File starts with empty "" svgGen variable
+  // File starts with an empty "" svgGen variable
   let svgGen = "";
   // set width and height of logo
   svgGen = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
   svgGen += "<g>";
   svgGen += `${answers.shape}`;
-  // Conditional check - users input from choices, adds polygon props if necessary & shape color to the svg Gen to complete the svg string to define the shape and shape properties.
+  // Conditional check - checking what shape the user chose. Once defined after the check it will add the appropriate string of code along with shape color. 
   let shapeAnswer;
-  // if else if else statement for shapes
-  // define shapeAnswer with new shape add additional data to svg Gen with += 
   if (answers.shape === "square") {
     shapeAnswer = new Square();
     svgGen += `<rect x="70" y="40" width="160" height="160" fill="${answers.shapeColor}"/>`;
@@ -83,14 +74,15 @@ function writeFileFunc(fileName, answers) {
     shapeAnswer = new Triangle();
     svgGen += `<polygon points="150, 18 244, 182 56, 182" fill="${answers.shapeColor}"/>`;
   }
+  // After shape has been defined in the code string, we will input the text & text color from the user.
   svgGen += `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.textColor}">${answers.text}</text>`;
-  svgGen += "</g>"; 
+  svgGen += "</g>";
   svgGen += "</svg>";
-  // Now write fs.writeFile() which will take in the completed svgGen, print error if an error occurs, else success!
+  // fs.writeFile() which will take in the completed svgGen string for the logo or print error if an error occurs.
   fs.writeFile('Logo.svg', svgGen, (err) => {
     err ? console.error(err) : console.log("Successfully generated Logo.svg file");
   })
 }
 
-// promptUser to kick off inquirer prompts when app is run. npm run test
+// promptQuestions() will kick off the process of prompting the user to begin generating his or her logo!
 promptQuestions();
