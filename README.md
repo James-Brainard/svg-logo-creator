@@ -20,4 +20,18 @@ To create a quick and free logo that anyone can use instead of hiring a 'graphic
 
 Run this application by invoking node index.js in the terminal. Begin by answering the prompts presented to you. Once finished a new 'Logo.svg' will be generated that you can now view in live server or in the browser.
 
+## Credits
 
+Use of the svg version and xmlns please refer to https://www.w3.org/2000/svg
+
+## License
+
+GNU v3 please refer to the license file in the repo.
+
+## Technologies
+
+Javascript
+Node.js
+OOP
+
+## Link to Walkthrough Video
